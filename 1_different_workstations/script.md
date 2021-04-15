@@ -16,8 +16,7 @@ show the .terraform directory and the .lock.hcl file
 tf plan
 tf apply -auto-approve
 ```
-Deploy will take 45 seconds.  
-show vCenter. 
+Deploy will take ~ 1 minute, show vCenter. 
 
 ## admin-2
 Admin-2 get's complains about the performance of the VM.  
@@ -27,9 +26,13 @@ He changes the vCPU and runs the code.
 ```
 tf init
 tf plan
+```
+Now a good admin would stop here and think, huh? Why would I create a new VM, I don't want that.  
+But let's say he does continue with his plan.
+```
 tf apply -auto-approve
 ```
-The plan will fail with the error: "VM Already exists"  
+Luckily; the plan will fail with the error: "VM Already exists"  
 We need to import the VM
 ```
 tf import vsphere_virtual_machine.vm /Amsterdam/vm/PVT-EMEAR/vm-ubuntu-demo
@@ -65,4 +68,4 @@ tf apply -auto-approve
 ```
 
 He now has deleted the disk that have been added.  
-The output that informed him of this was not very clear.  
+The output that informed him of this was not very clear, it was an orphaned_disk according to terraform.
