@@ -50,8 +50,10 @@ resource "vsphere_virtual_machine" "vm" {
   num_cpus = 4
   memory   = var.vsphere_vm_memory 
   guest_id = var.vsphere_vm_guest 
+  cpu_hot_add_enabled = true
+  memory_hot_add_enabled = true
 
-  network_interface {
+    network_interface {
     network_id = data.vsphere_network.network.id
   }
 

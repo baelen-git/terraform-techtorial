@@ -51,6 +51,8 @@ resource "vsphere_virtual_machine" "vm" {
   num_cpus = 2
   memory   = var.vsphere_vm_memory 
   guest_id = var.vsphere_vm_guest 
+  cpu_hot_add_enabled = true
+  memory_hot_add_enabled = true
 
   network_interface {
     network_id = data.vsphere_network.network.id
@@ -61,6 +63,12 @@ resource "vsphere_virtual_machine" "vm" {
     size  = var.vsphere_vm_disksize
   }
 
+  # disk {
+  #   label = "disk1"
+  #   size  = 5
+  #   unit_number = 1
+  # }
+ 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
     linked_clone  = var.linked_clone
