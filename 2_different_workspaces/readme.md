@@ -1,0 +1,104 @@
+# CLEANUP 
+```
+tf workspace select test
+tf destroy -auto-approve
+tf workspace select prod
+tf destroy -auto-approve
+rm -rf .terraform terraform.tfstate* .terraform.lock.hcl
+```
+Change the code back in your main.tf and terraform.tfvars file
+
+# SCRIPT 
+## setup
+1. create a management workstation
+2. create 3 users
+3. create an admin group
+4. make all 3 users members of the admin group and make this their primary group
+5. git clone https://github.com/baelen-git/terraform-techtorial
+6. chgrp -R admins terraform-techtorial
+5. setfacl -m "default:group::rw" terraform-techtorial
+
+## admin-1 
+Initialize your Terraform environment and create your application
+```
+tf init
+tf plan
+tf apply -auto-approve
+```
+Application is now deployed from a centralized workstation
+
+## admin-2
+Admin-2 get's complains about the performance of the VM.  
+-> Change the code vCPU and runs the code.  
+```
+tf apply
+```
+Everything works as expected 2 users can manage the same environment.  
+
+## admin-1
+Admin-1 can do changes without messing up eachothers work
+```
+tf apply 
+```
+
+Now we will introduce workspaces to create a test environment
+After creating the workspace you can see that the plan shows that terraform wants to create a new VM. We should move the statefile into the correct directory
+```
+tf workspace new -state terraform.tfstate prod
+tf plan
+```
+
+Now we will create a test environment.  
+```
+tf workspace new test
+```
+
+Because we want our other team members from the admin group also having permissions on the workspaces we need to give them write access
+```
+chmod -R g+w .
+```
+
+
+We want our VM to have a different name in test so we need to modify the code to have a different name based on the workspace
+```
+in main.tf:
+name             = "${var.vsphere_vm_name}-${terraform.workspace}
+in terraform.tfvars:
+vsphere_vm_name = "vm-app"
+```
+
+Now we can execute the plan in test and it will create a new VM
+```
+tf apply
+```
+Both admins will now work in the test environment until someone changes it.  
+
+## admin-2
+Now admin-2 wants to join on building the test environment.  
+The workspace that is active is shared among the admins
+```
+tf workspace list
+cat .terraform/environment
+```
+
+He logs in, checks the code and runs an apply.
+```
+tf apply
+```
+
+## admin-1
+I'm done with the Test environment so I'm gonna switch back to prod
+```
+tf workspace select prod
+```
+
+## admin-2
+Admin-2 still thinks he is in the test environment and is not so happy about the amount of resources claimed by the test servers.
+He changes the CPU's and runs an apply
+
+```
+tf apply
+```
+OOPS! the admin was not really paying attention!!  
+Now the CPU & Storage resources have been changed of the Production environment.
+
