@@ -43,7 +43,8 @@ data "vsphere_virtual_machine" "template" {
 
 
 resource "vsphere_virtual_machine" "vm" {
-  name             = "${var.vsphere_vm_name}-${terraform.workspace}"
+  name             = var.vsphere_vm_name
+  #  name             = "${var.vsphere_vm_name}-${terraform.workspace}"
   resource_pool_id = data.vsphere_resource_pool.pool.id
   datastore_id     = data.vsphere_datastore.datastore.id
   folder           = var.vsphere_folder
