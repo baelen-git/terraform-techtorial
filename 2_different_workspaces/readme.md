@@ -4,7 +4,7 @@ tf workspace select test
 tf destroy -auto-approve
 tf workspace select prod
 tf destroy -auto-approve
-rm -rf .terraform terraform.tfstate* .terraform.lock.hcl
+rm -rf /terraform/* /terraform/.*
 ```
 Change the code back in your main.tf and terraform.tfvars file
 
@@ -16,11 +16,18 @@ Change the code back in your main.tf and terraform.tfvars file
 4. make all 3 users members of the admin group and make this their primary group
 5. git clone https://github.com/baelen-git/terraform-techtorial
 6. chgrp -R admins terraform-techtorial
-5. setfacl -m "default:group::rw" terraform-techtorial
+5. sudo setfacl -m "default:group::rw" /terraform
 
 ## admin-1 
 Initialize your Terraform environment and create your application
 ```
+sudo mkdir /terraform
+sudo chgrp admins /terraform/
+sudo chmod g+w /terraform
+sudo setfacl -m "default:group::rwx" /terraform
+cd /terraform
+cp ~/terraform.tfvars ~/terraform-techtorial/2_different_workspaces/* .
+chmod g+w *
 tf init
 tf plan
 tf apply -auto-approve
@@ -29,7 +36,7 @@ Application is now deployed from a centralized workstation
 
 ## admin-2
 Admin-2 get's complains about the performance of the VM.  
--> Change the code vCPU and runs the code.  
+-> Change the vCPU from 2 to 4  
 ```
 tf apply
 ```
@@ -44,7 +51,8 @@ tf apply
 Now we will introduce workspaces to create a test environment
 After creating the workspace you can see that the plan shows that terraform wants to create a new VM. We should move the statefile into the correct directory
 ```
-tf workspace new -state terraform.tfstate prod
+tf workspace new prod
+mv terraform.tfstate terraform.tfstate.backup terraform.tfstate.d/prod
 tf plan
 ```
 
@@ -100,5 +108,7 @@ He changes the CPU's and runs an apply
 tf apply
 ```
 OOPS! the admin was not really paying attention!!  
-Now the CPU & Storage resources have been changed of the Production environment.
+Now the CPU & Storage resources have been changed of the Production environment.  
+And it even had to reboot the production host to remove the resources! Big OOPS!
+
 
