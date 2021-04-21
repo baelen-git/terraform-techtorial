@@ -66,7 +66,6 @@ Because we want our other team members from the admin group also having permissi
 chmod -R g+w .
 ```
 
-
 We want our VM to have a different name in test so we need to modify the code to have a different name based on the workspace
 ```
 in main.tf:

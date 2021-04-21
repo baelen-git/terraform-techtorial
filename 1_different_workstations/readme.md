@@ -40,7 +40,7 @@ tf import vsphere_virtual_machine.vm /Amsterdam/vm/PVT-EMEAR/vm-ubuntu-demo
 Now we can execute the change and add the vCPU
 ```
 tf plan
-tf apply -auto-approve
+tf a  pply -auto-approve
 ```
 
 ## admin-1
