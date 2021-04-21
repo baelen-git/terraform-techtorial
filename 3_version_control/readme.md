@@ -112,6 +112,9 @@ cd pvt-emear-demo
 vi main.tf
 git commit -a -m "added a disk"
 git push
+```
+Now login to the Terraform server and execute your code.
+```
 ssh admin1@tfserver
 cd /terraform/
 git pull 
@@ -128,14 +131,14 @@ git push
 You will get an error because there are changes in the repository that you don't have yet
 ```
 git pull 
-cat main.tf
+vi main.tf
+git log
+git diff HEAD~2 HEAD
+```
+Now login to the Terraform server and execute your code.
+```
 ssh admin1@tfserver
 cd /terraform/
 git pull 
 tf apply 
 ```
-
-
-
-
-
