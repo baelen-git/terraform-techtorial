@@ -2,7 +2,7 @@
 ```
 tf destroy -auto-approve
 rm -rf .terraform terraform.tfstate* .terraform.lock.hcl
-sudo iptables -D OUTPUT -d emear-secrets.cisco.com -j DROP
+sudo iptables -D OUTPUT -d emear-secrets.cisco.com -j REJECT
 ```
 
 # SETUP 
@@ -29,8 +29,10 @@ Deploy will take ~ 1 minute, show vCenter.
 ## scenario 2
 We simulate a fault in the Vault instance
 ```
-sudo iptables -A OUTPUT -d emear-secrets.cisco.com -j DROP
+sudo iptables -A OUTPUT -d emear-secrets.cisco.com -j REJECT
 ```
+
+The user wants to change the CPU to 4 (change code)
 
 Rerun automation
 ```
