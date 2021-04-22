@@ -43,7 +43,6 @@ git show
 
 ## admin-2
 Admin-2 needs to add a disk to the code.  
--> Change the vCPU from 2 to 4  
 ```
 vi main.tf
 #uncommonent the disk section
