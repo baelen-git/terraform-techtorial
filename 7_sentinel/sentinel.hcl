@@ -10,7 +10,7 @@ module "tfconfig-functions" {
     source = "../common-functions/tfconfig-functions/tfconfig-functions.sentinel"
 }
 
-policy "enforce-epg-naming-convention" {
+policy "enforce-vm-naming-convention" {
     source = "./vm-naming-convention.sentinel"
     enforcement_level = "hard-mandatory"
 }
