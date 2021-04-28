@@ -87,6 +87,7 @@ ERROR: both admins working from the same file can create problems.
 Let's start using remotes.  
 
 Create a new repo on [github.com] with the name pvt-emear-demo
+- add Riccardo as a Contributor 
 Push your git repo
 ```
 git remote add origin https://github.com/baelen-git/pvt-emear-demo.git
