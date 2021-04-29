@@ -3,14 +3,15 @@ Remove the backend piece of code from main.tf
 ```
 tf init
 ```
-
 Empty your S3 bucket
 Clear your DynamoDB database
+
 # SCRIPT 
 ## setup
 1. create an aws user account
 2. setup aws configure
 3. create a bucket
+4. create a dynamodb with LockID
 
 ## admin-1 
 Add this piece of code to your main.tf

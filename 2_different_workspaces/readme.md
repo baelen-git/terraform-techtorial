@@ -8,6 +8,24 @@ rm -rf /terraform/* /terraform/.*
 ```
 Change the code back in your main.tf and terraform.tfvars file
 
+# Full Cleanup
+```
+tf workspace select test
+tf destroy -auto-approve
+tf workspace select prod
+tf destroy -auto-approve
+sudo rm -rf /terraform
+aws s3 rm s3://pvt-tf-state/ --include "*" --recursive
+aws dynamodb delete-table --table-name terraform
+aws dynamodb create-table --table-name terraform --key LockID --attribute-definitions '{ "AttributeName" : "LockID", "AttributeType" : "S"  }' --key-schema '{ "AttributeName" : "LockID", "KeyType" : "HASH" }' --provisioned-throughput '{ "ReadCapacityUnits" : 5, "WriteCapacityUnits": 5}'
+gh api  -X DELETE repos/baelen-git/pvt-emear-demo
+cd terraform_techtorial/1_different_workstations/admin-1
+tf destroy -auto-approve
+rm -rf .terraform terraform.tfstate* 
+cd terraform_techtorial/1_different_workstations/admin-2
+tf destroy -auto-approve
+rm -rf .terraform terraform.tfstate* 
+```
 # SCRIPT 
 ## setup
 1. create a management workstation
