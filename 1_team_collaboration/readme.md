@@ -40,6 +40,11 @@ tf plan
 tf apply -auto-approve
 ```
 Deploy will take ~ 1 minute, show vCenter. 
+Boris now goes on a holiday but before he leaves;
+```
+cp main.tf terraform.tfvars variables.tf ../riccardo
+```
+
 
 ## admin-2
 Admin-2 get's complains about the performance of the VM.  
