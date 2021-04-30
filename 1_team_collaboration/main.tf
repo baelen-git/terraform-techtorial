@@ -47,6 +47,7 @@ resource "vsphere_virtual_machine" "vm" {
   resource_pool_id = data.vsphere_resource_pool.pool.id
   datastore_id     = data.vsphere_datastore.datastore.id
   folder           = var.vsphere_folder
+  annotation       = data.vsphere_virtual_machine.template.annotation
 
   num_cpus = 2
   memory   = var.vsphere_vm_memory 
@@ -74,4 +75,11 @@ resource "vsphere_virtual_machine" "vm" {
     linked_clone  = var.linked_clone
     timeout       = var.timeout
   }
+}
+output ip {
+  value = vsphere_virtual_machine.vm.default_ip_address
+}
+
+output name {
+  value = vsphere_virtual_machine.vm.name
 }

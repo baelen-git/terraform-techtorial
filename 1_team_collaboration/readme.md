@@ -14,8 +14,10 @@ gh api  -X DELETE repos/baelen-git/pvt-emear-demo
 1. On local host
 ```
 git clone https://github.com/baelen-git/terraform-techtorial
-cp terraform-techtorial/1_team_collaboration/* ~/boris
-cp terraform-techtorial/1_team_collaboration/* ~/riccardo
+cd terraform-techtorial/1_team_collaboration/
+mv terraform.tfvars.example terraform.tfvars
+vi terraform.tfvars
+cp * ~/boris
 ```
 2. create a management workstation
 3. create 2 users
@@ -102,4 +104,29 @@ cd /terraform
 ```
 copy the your terraform directory to the management station
 ```
-scp -R 
+scp -r * baelen@10.61.124.222:/terraform
+```
+on the management station:
+```
+cd /terraform
+tf init
+tf plan
+tf apply -auto-approve
+chmod g+w *
+chmod g+w .terraform*
+```
+
+## admin-2
+Admin-2 get's complains about the performance of the VM.  
+-> Change the vCPU from 2 to 4  
+```
+vi main.tf
+tf apply
+```
+Everything works as expected 2 users can manage the same environment.  
+
+## admin-1
+Admin-1 can do changes without messing up eachothers work
+```
+tf apply 
+```
