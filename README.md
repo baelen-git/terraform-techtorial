@@ -416,3 +416,29 @@ tf apply -auto-approve
 ```
 
 Now everything is broken and no automation can be applied
+
+# JENKINS
+
+1. Copy over the Jenkins file and show it on your workstation
+```
+cp ~/Jenkinsfile .
+vi Jenkinsfile
+git add Jenkinsfile
+git commit -a -m "Added a Jenkinsfile"
+```
+2. Do a change and push the changes to the git repo 
+```
+vi main.tf
+git commit -a -m "decreased the CPUs"
+git push
+```
+3. Log into Jenkins and kick off the workflow
+Show that the VM has been modified
+
+4. Now go back in the code and show the CLI commands that are getting executed
+```
+Using CLI commands brings the risk that;
+  1. The logic is in the Jenkins file; init, plan, apply. You need to copy this for every Project.
+  2. Syntax Changes
+  3. Screen scraping required for more complex pipelines
+  4. Using CLI commands in your CI/CD pipeline doesn't scale, you want APIs.

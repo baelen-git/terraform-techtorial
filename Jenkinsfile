@@ -17,8 +17,6 @@ pipeline {
         TF_VAR_vsphere_vm_name = "vm-tf-cicd"
         TF_VAR_vsphere_vm_template = "Ubuntu Workstation ACI"
         TF_VAR_vault_address = "https://emear-secrets.cisco.com"
-        TF_VAR_vsphere_user = "Administrator@vsphere.local"
-        TF_LOG = "WARN"
         PATH = "$TF_HOME:$PATH"
         AWS_ACCESS_KEY_ID = credentials('Aws Access Key')
         AWS_SECRET_ACCESS_KEY = credentials('Aws Secret Key')
