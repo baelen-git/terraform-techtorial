@@ -266,7 +266,19 @@ tf apply
 
 # SECURITY - Remote State
 ## admin-1 
-1. Add this piece of code to your main.tf
+1. Show that there is sensitive data in the statefile
+```
+tfserver
+cd /terraform
+ls -l
+vi terraform.state
+```
+
+2. Go in the browser and show that there are different backends and that S3 supports version,locking and encryption
+
+3. Show the S3 bucket in AWS and show encryption and the dynamoDB for  
+
+4. Add this piece of code to your main.tf
 ```
   backend "s3" {
     bucket = "pvt-tf-state"
@@ -276,7 +288,13 @@ tf apply
     dynamodb_table = "terraform"
   }
 ```
-2. commit to git and re-init
+
+5. run aws configure to connect to your aws bucket
+```
+aws configure
+```
+
+6. commit to git and re-init
 Terraform will migrate the state file to your S3 bucket when you run tf init
 ```
 git commit -a -m "added a remote state"
@@ -286,21 +304,21 @@ cd /terraform
 git pull 
 tf init
 ```
-3. remove the local state 
+7. remove the local state 
 ```
 rm -f terraform.tfstate*
 tf plan
 ```
-4. show the AWS console and show that we have
+8. show the AWS console and show that we have
 - encryption
 - versioning
 - locking
-5. show that we have state file locking by running a plan at the same time
+9. show that we have state file locking by running a plan at the same time
 ```
 tf plan 
 ```
 
-# SECURITY - Remote State
+# SECURITY - Vault
 ## scenario 1 
 In this scenario we will store credentials in a secure way using Vault.
 In the terraform.tfvars we have credentials stored in plain text, also if credentials are going to change all team members will have to update their tfvars. With Vault we can keep it centralized and secure.
@@ -309,12 +327,7 @@ In the terraform.tfvars we have credentials stored in plain text, also if creden
 First show the Credentials in the Vault
 ```
 
-Now change the code in 4 simple steps.
-
-0. pull the latest code
-```
-git pull
-```
+Now change the code in a coupe of simple steps.
 
 1. Add this block to the providers list
 ```
@@ -338,12 +351,9 @@ data "vault_generic_secret" "vsphere" {
 ```
 4. Modify the vsphere Provider to start using those credentials
 ```
-provider "vsphere" {
   user                 = data.vault_generic_secret.vsphere.data.username
   password             = data.vault_generic_secret.vsphere.data.password
   vsphere_server       = data.vault_generic_secret.vsphere.data.hostname
-  allow_unverified_ssl = true
-}
 ```
 5.  Specify the Variables you want to use and remove the ones you don't need anymore
 ```
@@ -368,12 +378,11 @@ cd /terraform
 git pull
 ```
 
-6. remove the credentials from your tfvars file
+7. remove the credentials from your tfvars file
 ```
 vi terraform.tfvars
 delete: vsphere user and password
-add:
-vault_address = "https://vault_instance"
+uncomment: vault_address 
 ```
 
 Now execute your code to test if this works
