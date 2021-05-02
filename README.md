@@ -436,9 +436,13 @@ git push
 Show that the VM has been modified
 
 4. Now go back in the code and show the CLI commands that are getting executed
+Change the outofdate with the code below
 ```
-Using CLI commands brings the risk that;
-  1. The logic is in the Jenkins file; init, plan, apply. You need to copy this for every Project.
-  2. Syntax Changes
-  3. Screen scraping required for more complex pipelines
-  4. Using CLI commands in your CI/CD pipeline doesn't scale, you want APIs.
+outofdate=`terraform  --version | { grep "outdated!" || true; }`
+```
+5. commit and execute again
+```
+git commit -a -m "changed the version check"
+git push
+```
+Kick off the pipeline and see what happens.
